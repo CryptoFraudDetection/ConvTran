@@ -1,8 +1,8 @@
 import os
 import numpy as np
 import logging
-from Dataset import data_loader
-from Dataset.classifier_tools import prepare_inputs_deep_learning
+from ConvTran.Dataset import data_loader
+from ConvTran.Dataset.classifier_tools import prepare_inputs_deep_learning
 logger = logging.getLogger(__name__)
 
 

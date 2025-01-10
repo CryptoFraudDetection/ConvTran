@@ -1,7 +1,7 @@
 import numpy as np
 from torch import nn
-from Models.AbsolutePositionalEncoding import tAPE, AbsolutePositionalEncoding, LearnablePositionalEncoding
-from Models.Attention import Attention, Attention_Rel_Scl, Attention_Rel_Vec
+from ConvTran.Models.AbsolutePositionalEncoding import tAPE, AbsolutePositionalEncoding, LearnablePositionalEncoding
+from ConvTran.Models.Attention import Attention, Attention_Rel_Scl, Attention_Rel_Vec
 
 
 def count_parameters(model):

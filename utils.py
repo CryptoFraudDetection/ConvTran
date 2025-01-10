@@ -8,7 +8,7 @@ import requests
 from datetime import datetime
 from torch.utils.data import Dataset
 
-from Dataset import load_segment_data, load_UEA_data
+from ConvTran.Dataset import load_segment_data, load_UEA_data
 
 logging.basicConfig(format='%(asctime)s | %(levelname)s : %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)

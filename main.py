@@ -7,12 +7,12 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from art import *
 # Import Project Modules -----------------------------------------------------------------------------------------------
-from utils import Setup, Initialization, Data_Loader, dataset_class, Data_Verifier
-from Models.model import model_factory, count_parameters
-from Models.optimizers import get_optimizer
-from Models.loss import get_loss_module
-from Models.utils import load_model
-from Training import SupervisedTrainer, train_runner
+from ConvTran.utils import Setup, Initialization, Data_Loader, dataset_class, Data_Verifier
+from ConvTran.Models.model import model_factory, count_parameters
+from ConvTran.Models.optimizers import get_optimizer
+from ConvTran.Models.loss import get_loss_module
+from ConvTran.Models.utils import load_model
+from ConvTran.Training import SupervisedTrainer, train_runner
 
 logger = logging.getLogger('__main__')
 parser = argparse.ArgumentParser()

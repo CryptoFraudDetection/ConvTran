@@ -7,8 +7,8 @@ import time
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
 
-from Models.loss import l2_reg_loss
-from Models import utils, analysis
+from ConvTran.Models.loss import l2_reg_loss
+from ConvTran.Models import utils, analysis
 
 logger = logging.getLogger('__main__')
 
