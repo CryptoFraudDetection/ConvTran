@@ -4,6 +4,7 @@ import torch
 import numpy as np
 from collections import OrderedDict
 import time
+import wandb
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
 
@@ -75,7 +76,7 @@ class SupervisedTrainer(BaseTrainer):
 
         for i, batch in enumerate(self.dataloader):
 
-            X, targets, IDs = batch
+            X, targets = batch
             targets = targets.to(self.device)
             predictions = self.model(X.to(self.device))
 
@@ -118,9 +119,9 @@ class SupervisedTrainer(BaseTrainer):
         epoch_loss = 0  # total loss of epoch
         total_samples = 0  # total samples in epoch
 
-        per_batch = {'targets': [], 'predictions': [], 'metrics': [], 'IDs': []}
+        per_batch = {'targets': [], 'predictions': [], 'metrics': []}
         for i, batch in enumerate(self.dataloader):
-            X, targets, IDs = batch
+            X, targets = batch
             targets = targets.to(self.device)
             predictions = self.model(X.to(self.device))
             loss = self.loss_module(predictions, targets)  # (batch_size,) loss for each sample in the batch
@@ -132,7 +133,6 @@ class SupervisedTrainer(BaseTrainer):
             per_batch['predictions'].append(predictions.cpu().numpy())
             loss = loss.detach()
             per_batch['metrics'].append([loss.cpu().numpy()])
-            per_batch['IDs'].append(IDs)
 
             metrics = {"loss": mean_loss}
             #if i % self.print_interval == 0:
@@ -210,7 +210,7 @@ def validate(val_evaluator, tensorboard_writer, config, best_metrics, best_value
     return aggr_metrics, best_metrics, best_value
 
 
-def train_runner(config, model, trainer, val_evaluator, path):
+def train_runner(config, model, trainer, val_evaluator, path, fold_idx):
     epochs = config['epochs']
     optimizer = config['optimizer']
     loss_module = config['loss_module']
@@ -239,6 +239,12 @@ def train_runner(config, model, trainer, val_evaluator, path):
             tensorboard_writer.add_scalar('{}/train'.format(k), v, epoch)
             print_str += '{}: {:8f} | '.format(k, v)
         logger.info(print_str)
+        wandb.log({
+                f"fold_{fold_idx+1}/train_loss": aggr_metrics_train["loss"],
+                f"fold_{fold_idx+1}/val_loss": aggr_metrics_val["loss"],
+                f"fold_{fold_idx+1}/val_accuracy": aggr_metrics_val["accuracy"],
+                
+            }, step=epoch)
     total_runtime = time.time() - total_start_time
     logger.info("Train Time: {} hours, {} minutes, {} seconds\n".format(*utils.readable_time(total_runtime)))
     return
